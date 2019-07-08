@@ -1,0 +1,11 @@
+- hosts: dev
+  become: true
+
+  tasks:
+    - name: runnns
+      block:
+        - name: creating folder
+          command: mkdir /mnt/sam
+      rescue:
+        - name: folder deleting
+          command:  rm -rf /mnt/sam

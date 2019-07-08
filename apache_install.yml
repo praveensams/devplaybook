@@ -1,0 +1,39 @@
+- hosts: dev
+  become: true
+
+  tasks:
+    - name: installing packages
+      yum:
+        name: ['httpd','httpd-tools']
+        state: "installed"
+
+    - name: copy the index.html from the present folder
+      copy:
+        src: "index.html"
+        dest: "/var/www/html/index.html"
+
+    - name: validating a user exist in the system
+      shell: |
+              cat /etc/passwd | grep -i root
+      register: result
+
+    - name: displaying the result
+      meta: end_play
+      when: ( "bakjfjkegsh" in result.stdout )
+
+    - name:  cOpying the configuration file in the /etc/httpd location 
+      template:
+        src: "httpd.conf.j2"
+        dest: "/etc/httpd/conf/httpd.conf"
+      notify: restarted
+
+    - name: restarting the service
+      service:
+        name: "httpd"
+        state: "started" 
+
+  handlers:
+    - name: restarted
+      service:
+        name: "httpd"
+        state: "restarted"

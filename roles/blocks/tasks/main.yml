@@ -1,0 +1,34 @@
+---
+# tasks file for blocks
+
+- name: validating the folder
+  block:
+    - name: creating a folder
+      shell: |
+              mkdir /mnt/sam
+
+    - name: folder created
+      debug:
+        msg: "folder created"
+
+  rescue:
+    - name: Deleting existing folder
+      shell: |
+               rm -rf /mnt/sam
+
+    - name: deleting the eixting folder
+      debug:
+        msg: "deleting the existing folder"     
+
+
+- name: finding user with login shell
+  shell: |
+        cat /etc/passwd | grep -i login 
+  register: result
+
+- name: setting the fact
+  set_fact:
+    passer: "{{ result.stdout }}"
+
+- name: import subtask
+  import_tasks: sam.yml
