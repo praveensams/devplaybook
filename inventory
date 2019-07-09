@@ -1,5 +1,6 @@
 [dev]
 node01 ansible_ssh_host=192.168.33.110 ansible_ssh_user=vagrant ansible_ssh_pass=vagrant ports=3030 
+localhost
 
 [dev:vars]
 ports=4040
